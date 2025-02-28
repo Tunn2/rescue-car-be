@@ -32,25 +32,31 @@ const loginService = async ({ email, password }) => {
   }
 };
 
-const registerService = async ({ fullName, password, email, phone }) => {
-  try {
-    const isExistedEmail = await checkEmailExist(email);
-    if (isExistedEmail) throw new Error("This email already existed");
-    const hashedPassword = await bcrypt.hash(password, 10);
+const registerService = async ({ fullName, password, email, phone, role }) => {
+  const isExistedEmail = await checkEmailExist(email);
+  if (isExistedEmail) throw new Error("This email already existed");
+  const hashedPassword = await bcrypt.hash(password, 10);
+  if (role) {
+    await User.create({
+      fullName,
+      password: hashedPassword,
+      email,
+      phone,
+      role,
+    });
+  } else {
     await User.create({
       fullName,
       password: hashedPassword,
       email,
       phone,
     });
-
-    const user = await User.findOne({ email })
-      .select("-password -updatedAt -createdAt -isActive")
-      .lean();
-    return user;
-  } catch (error) {
-    throw new Error(error.message);
   }
+
+  const user = await User.findOne({ email })
+    .select("-password -updatedAt -createdAt -isActive")
+    .lean();
+  return user;
 };
 
 const refreshTokenService = async (refreshToken) => {

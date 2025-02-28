@@ -6,8 +6,8 @@ const {
 
 const registerController = async (req, res) => {
   try {
-    const { fullName, phone, email, password } = req.body;
-    const user = await registerService({ fullName, phone, email, password });
+    const { fullName, phone, email, password, role } = req.body;
+    user = await registerService({ fullName, phone, email, password });
     return res.send(user);
   } catch (error) {
     return res.send({ errorCode: 1, message: error.message });
@@ -18,6 +18,16 @@ const loginController = async (req, res) => {
   try {
     const { email, password } = req.body;
     return res.send(await loginService({ email, password }));
+  } catch (error) {
+    return res.send({ errorCode: 1, message: error.message });
+  }
+};
+
+const registerForAdminController = async (req, res) => {
+  try {
+    const { fullName, phone, email, password, role } = req.body;
+    user = await registerService({ fullName, phone, email, password, role });
+    return res.send(user);
   } catch (error) {
     return res.send({ errorCode: 1, message: error.message });
   }
@@ -40,4 +50,5 @@ module.exports = {
   registerController,
   loginController,
   refreshTokenController,
+  registerForAdminController,
 };
