@@ -1,7 +1,17 @@
 const {
   createAPackageService,
   getPackagesService,
+  getPackageByIdService,
 } = require("../services/package.service");
+
+const getPackageByIdController = async (req, res) => {
+  try {
+    const { packageId } = req.params;
+    return res.send(await getPackageByIdService(packageId));
+  } catch (error) {
+    return res.send({ errorCode: 1, message: error.message });
+  }
+};
 
 const getPackagesController = async (req, res) => {
   try {
@@ -25,4 +35,5 @@ const createAPackageController = async (req, res) => {
 module.exports = {
   createAPackageController,
   getPackagesController,
+  getPackageByIdController,
 };

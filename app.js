@@ -10,6 +10,7 @@ const bookingRoute = require("./routes/booking.route");
 const serviceRoute = require("./routes/service.route");
 const packageRoute = require("./routes/package.route");
 const userRoute = require("./routes/user.route");
+const paymentRoute = require("./routes/payment.route");
 
 var app = express();
 
@@ -26,6 +27,8 @@ app.use("/api/bookings", bookingRoute);
 app.use("/api/services", serviceRoute);
 app.use("/api/packages", packageRoute);
 app.use("/api/users", userRoute);
+app.use("/api/payment", paymentRoute);
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));

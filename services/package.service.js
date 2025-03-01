@@ -1,4 +1,17 @@
+const { default: mongoose } = require("mongoose");
 const Package = require("../models/package.model");
+
+const getPackageByIdService = async (id) => {
+  if (!id || !mongoose.Types.ObjectId.isValid(id))
+    throw new Error("ID không hợp lệ");
+  const foundPackage = await Package.findOne({
+    _id: new mongoose.Types.ObjectId(id),
+  })
+    .select("name price description")
+    .lean();
+  if (!foundPackage) throw new Error("Không tìm thấy gói này");
+  return foundPackage;
+};
 
 const getPackagesService = async () => {
   return await Package.find()
@@ -25,4 +38,8 @@ const createAPackageService = async ({
   return package;
 };
 
-module.exports = { createAPackageService, getPackagesService };
+module.exports = {
+  createAPackageService,
+  getPackagesService,
+  getPackageByIdService,
+};

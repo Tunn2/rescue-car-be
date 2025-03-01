@@ -10,7 +10,15 @@ const orderSchema = new mongoose.Schema(
     package: {
       type: mongoose.Types.ObjectId,
       ref: "Package",
-      required: true,
+      // required: true,
+    },
+    car: {
+      type: mongoose.Types.ObjectId,
+      ref: "Car",
+    },
+    booking: {
+      type: mongoose.Types.ObjectId,
+      ref: "Booking",
     },
     voucher: {
       type: mongoose.Types.ObjectId,

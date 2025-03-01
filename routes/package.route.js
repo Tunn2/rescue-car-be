@@ -7,11 +7,12 @@ const {
 const {
   createAPackageController,
   getPackagesController,
+  getPackageByIdController,
 } = require("../controllers/package.controller");
 
 const packageRoute = express.Router();
 packageRoute.get("/", getPackagesController);
-
+packageRoute.get("/:packageId", getPackageByIdController);
 packageRoute.use(authenticate);
 packageRoute.use(checkAdminRole);
 packageRoute.post("/", createAPackageController);
