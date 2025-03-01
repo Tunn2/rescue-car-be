@@ -4,13 +4,19 @@ const {
   authenticate,
   checkAdminRole,
 } = require("../middlewares/auth.middleware");
-const { updateUserByIdController } = require("../controllers/user.controller");
+const {
+  updateUserByIdController,
+  getStaffsController,
+  getCustomersController,
+} = require("../controllers/user.controller");
 
 const userRoute = express.Router();
 
 userRoute.use(authenticate);
 userRoute.put("/", updateUserByIdController);
 
-// userRoute.use(checkAdminRole);
+userRoute.use(checkAdminRole);
+userRoute.get("/staffs", getStaffsController);
+userRoute.get("/customers", getCustomersController);
 
 module.exports = userRoute;

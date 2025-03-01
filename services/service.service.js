@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const Service = require("../models/service.model");
 
 const createAServiceService = async ({ name, price }) => {
@@ -11,4 +12,20 @@ const createAServiceService = async ({ name, price }) => {
   return service;
 };
 
-module.exports = { createAServiceService };
+const getServicesService = async () => {
+  return await Service.find()
+    .select("name price")
+    .sort([["createdAt", -1]])
+    .lean();
+};
+
+const deleteServiceByIdService = async (id) => {
+  await Service.deleteOne({ _id: new mongoose.Types.ObjectId(id) });
+  return true;
+};
+
+module.exports = {
+  createAServiceService,
+  getServicesService,
+  deleteServiceByIdService,
+};

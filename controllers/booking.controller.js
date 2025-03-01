@@ -1,4 +1,15 @@
-const { createBookingService } = require("../services/booking.service");
+const {
+  createBookingService,
+  getBookingsService,
+} = require("../services/booking.service");
+
+const getBookingsController = async (req, res) => {
+  try {
+    return res.send(await getBookingsService());
+  } catch (error) {
+    return res.send({ errorCode: 1, message: error.message });
+  }
+};
 
 const createBookingController = async (req, res) => {
   try {
@@ -21,4 +32,5 @@ const createBookingController = async (req, res) => {
 
 module.exports = {
   createBookingController,
+  getBookingsController,
 };

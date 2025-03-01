@@ -1,4 +1,24 @@
-const { updateUserByIdService } = require("../services/user.service");
+const {
+  updateUserByIdService,
+  getStaffsService,
+  getCustomersService,
+} = require("../services/user.service");
+
+const getStaffsController = async (req, res) => {
+  try {
+    return res.send(await getStaffsService());
+  } catch (error) {
+    return res.send({ errorCode: 1, message: error.message });
+  }
+};
+
+const getCustomersController = async (req, res) => {
+  try {
+    return res.send(await getCustomersService());
+  } catch (error) {
+    return res.send({ errorCode: 1, message: error.message });
+  }
+};
 
 const updateUserByIdController = async (req, res) => {
   try {
@@ -12,4 +32,6 @@ const updateUserByIdController = async (req, res) => {
 
 module.exports = {
   updateUserByIdController,
+  getStaffsController,
+  getCustomersController,
 };

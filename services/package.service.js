@@ -8,6 +8,7 @@ const getPackageByIdService = async (id) => {
     _id: new mongoose.Types.ObjectId(id),
   })
     .select("name price description")
+
     .lean();
   if (!foundPackage) throw new Error("Không tìm thấy gói này");
   return foundPackage;
@@ -17,6 +18,7 @@ const getPackagesService = async () => {
   return await Package.find()
     .populate("services")
     .select("name description price services")
+    .sort([["createdAt", -1]])
     .lean();
 };
 

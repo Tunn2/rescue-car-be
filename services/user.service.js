@@ -1,6 +1,18 @@
 const { default: mongoose } = require("mongoose");
 const User = require("../models/user.model");
 
+const getStaffsService = async () => {
+  return await User.find({ role: { $in: ["RESCUER", "RECEPTIONIST"] } })
+    .sort([["createdAt", -1]])
+    .lean();
+};
+
+const getCustomersService = async () => {
+  return await User.find({ role: "CUSTOMER" })
+    .sort([["createdAt", -1]])
+    .lean();
+};
+
 const updateUserByIdService = async ({ userId, fullName, phone }) => {
   if (!mongoose.Types.ObjectId.isValid(userId)) {
     throw new Error("Invalid userId");
@@ -37,4 +49,6 @@ module.exports = {
   findUserByIdService,
   findUserByEmailService,
   updateUserByIdService,
+  getStaffsService,
+  getCustomersService,
 };

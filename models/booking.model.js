@@ -6,6 +6,10 @@ const bookingSchema = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       ref: "User",
     },
+    name: {
+      type: String,
+      required: true,
+    },
     description: {
       type: String,
       required: true,
@@ -30,7 +34,7 @@ const bookingSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    locatrion: {
+    location: {
       type: String,
       required: true,
     },
