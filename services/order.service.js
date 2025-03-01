@@ -1,6 +1,7 @@
 const { default: mongoose } = require("mongoose");
 const Order = require("../models/order.model");
 const Package = require("../models/package.model");
+const Car = require("../models/car.model");
 
 const getOrderByIdService = async (orderId) => {
   if (!orderId || !mongoose.Types.ObjectId.isValid(orderId))
@@ -35,6 +36,17 @@ const createOrderForPackageService = async ({ packageId, carId, userId }) => {
 const updateOrderByIdService = async (orderId, status = "FINISHED") => {
   if (!mongoose.Types.ObjectId.isValid(orderId))
     throw new Error("ID không hợp lệ");
+  const order = await Order.findOne({
+    _id: new mongoose.Types.ObjectId(orderId),
+  })
+    .select("car package")
+    .lean();
+  await Car.updateOne(
+    { _id: order.car },
+    {
+      package: order.package,
+    }
+  );
   return await Order.updateOne(
     { _id: new mongoose.Types.ObjectId(orderId) },
     { status }
