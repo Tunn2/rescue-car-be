@@ -1,6 +1,16 @@
 const { default: mongoose } = require("mongoose");
 const Car = require("../models/car.model");
 
+const deleteCarByIdService = async ({ userId, carId }) => {
+  const foundCar = await Car.findOne({
+    _id: new mongoose.Types.ObjectId(carId),
+    user: new mongoose.Types.ObjectId(userId),
+  });
+  if (!foundCar) throw new Error("Yêu cầu không hợp lệ");
+  await Car.deleteOne({ _id: carId });
+  return true;
+};
+
 const createCarService = async ({
   brand,
   model,
@@ -32,6 +42,7 @@ const checkCarExist = async ({ licensePlate }) => {
 };
 
 module.exports = {
+  deleteCarByIdService,
   createCarService,
   getCarByUserIdService,
 };

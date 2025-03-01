@@ -20,7 +20,7 @@ const carSchema = new mongoose.Schema(
       required: true,
     },
     numberOfSeats: {
-      type: String,
+      type: Number,
       required: true,
     },
     licensePlate: {
@@ -30,6 +30,10 @@ const carSchema = new mongoose.Schema(
     },
     package: {
       type: String,
+      default: null,
+    },
+    expiredDate: {
+      type: Date,
       default: null,
     },
   },
