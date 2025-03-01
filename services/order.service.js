@@ -2,6 +2,7 @@ const { default: mongoose } = require("mongoose");
 const Order = require("../models/order.model");
 const Package = require("../models/package.model");
 const Car = require("../models/car.model");
+const moment = require("moment-timezone");
 
 const getOrderByIdService = async (orderId) => {
   if (!orderId || !mongoose.Types.ObjectId.isValid(orderId))
@@ -41,10 +42,12 @@ const updateOrderByIdService = async (orderId, status = "FINISHED") => {
   })
     .select("car package")
     .lean();
+  const expiredDate = moment().tz("Asia/Bangkok").add(1, "year").toDate();
   await Car.updateOne(
     { _id: order.car },
     {
       package: order.package,
+      expiredDate,
     }
   );
   return await Order.updateOne(

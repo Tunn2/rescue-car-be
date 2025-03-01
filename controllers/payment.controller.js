@@ -45,7 +45,7 @@ const createPaymentForPackageController = async (req, res) => {
       vnp_TxnRef: order._id,
       vnp_OrderInfo: `Thanh toan don hang ${order._id}`,
       vnp_OrderType: ProductCode.Other,
-      vnp_ReturnUrl: "http://localhost:5173",
+      vnp_ReturnUrl: "http://localhost:5173/my-cars",
       vnp_Locale: VnpLocale.VN,
       vnp_CreateDate: dateFormat(new Date()),
       vnp_ExpireDate: dateFormat(tomorrow),

@@ -32,7 +32,9 @@ const createCarService = async ({
 };
 
 const getCarByUserIdService = async (userId) => {
-  const cars = await Car.find({ user: new mongoose.Types.ObjectId(userId) });
+  const cars = await Car.find({ user: new mongoose.Types.ObjectId(userId) })
+    .populate("package")
+    .lean();
   return cars;
 };
 

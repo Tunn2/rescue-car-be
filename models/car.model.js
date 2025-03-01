@@ -29,7 +29,8 @@ const carSchema = new mongoose.Schema(
       required: true,
     },
     package: {
-      type: String,
+      type: mongoose.Types.ObjectId,
+      ref: "Package",
       default: null,
     },
     expiredDate: {
