@@ -17,6 +17,17 @@ const authenticate = (req, res, next) => {
   }
 };
 
+const checkRescuerRole = async (req, res, next) => {
+  const user = await findUserByIdService(req.userId);
+  if (user.role === "RESCUER") {
+    return next();
+  }
+  return res.status(403).json({
+    errorCode: 1,
+    message: "You do not have permission to do this action",
+  });
+};
+
 const checkAdminRole = async (req, res, next) => {
   const user = await findUserByIdService(req.userId);
   if (user.role === "ADMIN") {
@@ -32,4 +43,5 @@ const checkAdminRole = async (req, res, next) => {
 module.exports = {
   authenticate,
   checkAdminRole,
+  checkRescuerRole,
 };

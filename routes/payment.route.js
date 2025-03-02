@@ -4,6 +4,7 @@ const { authenticate } = require("../middlewares/auth.middleware");
 const {
   createPaymentForPackageController,
   verifyIPNCall,
+  createPaymentForBookingController,
 } = require("../controllers/payment.controller");
 
 const paymentRoute = express.Router();
@@ -12,5 +13,6 @@ paymentRoute.get("/vnpay-ipn", verifyIPNCall);
 
 paymentRoute.use(authenticate);
 paymentRoute.post("/", createPaymentForPackageController);
+paymentRoute.post("/booking", createPaymentForBookingController);
 
 module.exports = paymentRoute;

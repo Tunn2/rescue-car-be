@@ -2,7 +2,16 @@ const {
   updateUserByIdService,
   getStaffsService,
   getCustomersService,
+  getAvailableRescuersService,
 } = require("../services/user.service");
+
+const getAvailableRescuersController = async (req, res) => {
+  try {
+    return res.send(await getAvailableRescuersService());
+  } catch (error) {
+    return res.send({ errorCode: 1, message: error.message });
+  }
+};
 
 const getStaffsController = async (req, res) => {
   try {
@@ -34,4 +43,5 @@ module.exports = {
   updateUserByIdController,
   getStaffsController,
   getCustomersController,
+  getAvailableRescuersController,
 };

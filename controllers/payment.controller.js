@@ -15,6 +15,7 @@ const {
   createOrderForPackageService,
   getOrderByIdService,
   updateOrderByIdService,
+  createOrderForBookingService,
 } = require("../services/order.service");
 
 const vnpay = new VNPay({
@@ -33,6 +34,35 @@ const createPaymentForPackageController = async (req, res) => {
     const order = await createOrderForPackageService({
       carId,
       packageId,
+      userId: req.userId,
+    });
+
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    const paymentUrl = vnpay.buildPaymentUrl({
+      vnp_Amount: order.totalPrice,
+      vnp_IpAddr: "127.0.0.1",
+      vnp_TxnRef: order._id,
+      vnp_OrderInfo: `Thanh toan don hang ${order._id}`,
+      vnp_OrderType: ProductCode.Other,
+      vnp_ReturnUrl: "http://localhost:5173/my-cars",
+      vnp_Locale: VnpLocale.VN,
+      vnp_CreateDate: dateFormat(new Date()),
+      vnp_ExpireDate: dateFormat(tomorrow),
+    });
+
+    return res.json({ paymentUrl });
+  } catch (error) {
+    return res.send({ errorCode: 1, message: error.message });
+  }
+};
+
+const createPaymentForBookingController = async (req, res) => {
+  try {
+    const { bookingId } = req.body;
+    const order = await createOrderForBookingService({
+      bookingId,
       userId: req.userId,
     });
 
@@ -86,4 +116,8 @@ const verifyIPNCall = async (req, res) => {
   }
 };
 
-module.exports = { createPaymentForPackageController, verifyIPNCall };
+module.exports = {
+  createPaymentForPackageController,
+  verifyIPNCall,
+  createPaymentForBookingController,
+};

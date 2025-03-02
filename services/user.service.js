@@ -1,5 +1,30 @@
 const { default: mongoose } = require("mongoose");
 const User = require("../models/user.model");
+const Booking = require("../models/booking.model");
+
+const getAvailableRescuersService = async () => {
+  // Tìm danh sách các staff đang có mặt trong booking với trạng thái chưa hoàn thành
+  const busyRescuers = await Booking.find(
+    {
+      status: { $in: ["PENDING", "COMING", "IN-PROGRESS"] }, // Trạng thái chưa hoàn thành
+    },
+    { staff1: 1, staff2: 1, _id: 0 }
+  ).lean();
+
+  const busyStaffIds = new Set(
+    busyRescuers
+      .flatMap((booking) => [booking.staff1, booking.staff2])
+      .filter((id) => id) // Loại bỏ undefined/null
+      .map((id) => id.toString()) // Chuyển thành string để so sánh
+  );
+
+  // Tìm danh sách nhân viên có role là "rescuer" nhưng không nằm trong danh sách đang bận
+  const availableRescuers = await User.find({
+    role: "RESCUER",
+    _id: { $nin: Array.from(busyStaffIds) }, // Loại bỏ những người đang bận
+  }).lean();
+  return availableRescuers;
+};
 
 const getStaffsService = async () => {
   return await User.find({ role: { $in: ["RESCUER", "RECEPTIONIST"] } })
@@ -51,4 +76,5 @@ module.exports = {
   updateUserByIdService,
   getStaffsService,
   getCustomersService,
+  getAvailableRescuersService,
 };

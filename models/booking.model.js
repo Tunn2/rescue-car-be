@@ -44,7 +44,14 @@ const bookingSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["PENDING", "COMING", "IN-PROGRESS", "FINISHED", "CANCELED"],
+      enum: [
+        "PENDING",
+        "COMING",
+        "IN-PROGRESS",
+        "PENDING_PAYMENT",
+        "FINISHED",
+        "CANCELED",
+      ],
       default: "PENDING",
     },
     arrivalDate: {
@@ -63,6 +70,7 @@ const bookingSchema = new mongoose.Schema(
       type: Number,
       default: null,
     },
+    services: [{ type: mongoose.Types.ObjectId, ref: "Service" }],
   },
   {
     timestamps: { createdAt: "bookingDate" },
