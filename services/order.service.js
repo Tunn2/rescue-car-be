@@ -27,6 +27,7 @@ const createOrderForBookingService = async ({ bookingId, userId }) => {
     user: userId,
     price: foundBooking.price,
     totalPrice: foundBooking.totalPrice,
+    booking: bookingId,
   });
 };
 
